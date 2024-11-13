@@ -28,10 +28,16 @@ export default function Home() {
       formData.append("height", height);
       formData.append("width", width);
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 290000); // 290 seconds timeout
+
+
       const response = await fetch("/api/generate", {
         method: "POST",
         body: formData,
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
 
       const data = await response.json();
 
